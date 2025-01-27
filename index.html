@@ -1,0 +1,123 @@
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+
+const StudyPlanner = () => {
+  const [aims, setAims] = useState({ university: "", degree: "", ATAR: "" });
+  const [subjects, setSubjects] = useState([]);
+  const [newSubject, setNewSubject] = useState({ name: "", currentMark: "", requiredMark: "" });
+  const [dailyTimetable, setDailyTimetable] = useState([]);
+  const [newTimeSlot, setNewTimeSlot] = useState({ time: "", subject: "", goal: "" });
+
+  const addSubject = () => {
+    if (newSubject.name && newSubject.currentMark && newSubject.requiredMark) {
+      setSubjects([...subjects, newSubject]);
+      setNewSubject({ name: "", currentMark: "", requiredMark: "" });
+    }
+  };
+
+  const addTimeSlot = () => {
+    if (newTimeSlot.time && newTimeSlot.subject && newTimeSlot.goal) {
+      setDailyTimetable([...dailyTimetable, newTimeSlot]);
+      setNewTimeSlot({ time: "", subject: "", goal: "" });
+    }
+  };
+
+  return (
+    <div className="p-4 space-y-6">
+      <h1 className="text-2xl font-bold">AI Study Planner</h1>
+
+      {/* Step 1: Set Your Aims */}
+      <Card>
+        <CardContent>
+          <h2 className="text-xl font-semibold">Step 1: Set Your Aims</h2>
+          <div className="space-y-4 mt-4">
+            <Input
+              placeholder="University"
+              value={aims.university}
+              onChange={(e) => setAims({ ...aims, university: e.target.value })}
+            />
+            <Input
+              placeholder="Degree"
+              value={aims.degree}
+              onChange={(e) => setAims({ ...aims, degree: e.target.value })}
+            />
+            <Input
+              placeholder="ATAR Goal"
+              value={aims.ATAR}
+              onChange={(e) => setAims({ ...aims, ATAR: e.target.value })}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Step 2: Rate Your Subjects */}
+      <Card>
+        <CardContent>
+          <h2 className="text-xl font-semibold">Step 2: Rate Your Subjects</h2>
+          <div className="space-y-4 mt-4">
+            <Input
+              placeholder="Subject Name"
+              value={newSubject.name}
+              onChange={(e) => setNewSubject({ ...newSubject, name: e.target.value })}
+            />
+            <Input
+              placeholder="Current Mark"
+              value={newSubject.currentMark}
+              onChange={(e) => setNewSubject({ ...newSubject, currentMark: e.target.value })}
+            />
+            <Input
+              placeholder="Required Mark"
+              value={newSubject.requiredMark}
+              onChange={(e) => setNewSubject({ ...newSubject, requiredMark: e.target.value })}
+            />
+            <Button onClick={addSubject}>Add Subject</Button>
+          </div>
+          <div className="mt-4 space-y-2">
+            {subjects.map((subject, index) => (
+              <div key={index} className="p-2 border rounded">
+                {subject.name} - Current: {subject.currentMark}, Required: {subject.requiredMark}
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Step 5: Write a Daily Study Timetable */}
+      <Card>
+        <CardContent>
+          <h2 className="text-xl font-semibold">Step 5: Daily Study Timetable</h2>
+          <div className="space-y-4 mt-4">
+            <Input
+              placeholder="Time Slot (e.g., 9:00 - 9:55)"
+              value={newTimeSlot.time}
+              onChange={(e) => setNewTimeSlot({ ...newTimeSlot, time: e.target.value })}
+            />
+            <Input
+              placeholder="Subject"
+              value={newTimeSlot.subject}
+              onChange={(e) => setNewTimeSlot({ ...newTimeSlot, subject: e.target.value })}
+            />
+            <Textarea
+              placeholder="Goal"
+              value={newTimeSlot.goal}
+              onChange={(e) => setNewTimeSlot({ ...newTimeSlot, goal: e.target.value })}
+            />
+            <Button onClick={addTimeSlot}>Add Time Slot</Button>
+          </div>
+          <div className="mt-4 space-y-2">
+            {dailyTimetable.map((slot, index) => (
+              <div key={index} className="p-2 border rounded">
+                {slot.time} - {slot.subject}: {slot.goal}
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default StudyPlanner;
